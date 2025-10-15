@@ -32,6 +32,10 @@ add_executable(
   strategy_node
   src/strategy_node.cpp
   src/go_to_point_node.cpp
+  src/get_game_state.cpp
+  src/check_command.cpp
+  src/assing_roles.cpp
+  src/check_ball_possession.cpp
 )
 
 ament_target_dependencies(
@@ -45,11 +49,16 @@ ament_target_dependencies(
 target_include_directories(strategy_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
+  ${behaviortree_cpp_INCLUDE_DIRS}
 )
 
 add_executable(
   movement_calculation_node
   src/movement_calculation.cpp
+  src/assing_roles.cpp
+  src/check_ball_possession.cpp
+  src/get_game_state.cpp
+  src/check_command.cpp
 )
 
 ament_target_dependencies(
@@ -60,11 +69,13 @@ ament_target_dependencies(
   nav_msgs
   sensor_msgs
   tf2_ros
+  behaviortree_cpp
 )
 
 target_include_directories(movement_calculation_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
+  ${behaviortree_cpp_INCLUDE_DIRS}
 )
 
 install(TARGETS
@@ -79,7 +90,7 @@ install(
 )
 
 install(
-  FILES test_tree.xml
+  FILES strategy_tree.xml
   DESTINATION share/${PROJECT_NAME}
 )
 

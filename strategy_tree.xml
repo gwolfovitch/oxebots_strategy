@@ -1,0 +1,55 @@
+<root main_tree_to_execute="MainTree" BTCPP_format="4">
+
+  <BehaviorTree ID="MainTree">
+    <ReactiveSequence name="Root">
+
+      <GetGameState command="{game_command}" ball_x="{ball_x}" ball_y="{ball_y}" />
+
+      <Fallback name="MainDecision">
+
+        <Sequence name="HandleStoppedGame">
+          <CheckCommand command_to_check="STOP" current_command="{game_command}" />
+          <Parallel name="PositionRobotsForStop" success_count="3">
+            <GoToPoint robot_id="{goalkeeper_id}" x="-5000" y="0" w="0" />
+          </Parallel>
+        </Sequence>
+
+        <Sequence name="HandlePrepareKickoff">
+            <CheckCommand command_to_check="PREPARE_KICKOFF_BLUE" current_command="{game_command}" />
+            <Parallel name="PositionForKickoff" success_count="3">
+                <GoToPoint robot_id="0" x="-1000" y="0" w="0" />
+                <GoToPoint robot_id="1" x="-1000" y="1000" w="0" />
+                <GoToPoint robot_id="2" x="-1000" y="-1000" w="0" />
+            </Parallel>
+        </Sequence>
+        
+        <Sequence name="HandleNormalPlay">
+          <CheckCommand command_to_check="NORMAL_START" current_command="{game_command}" />
+          
+          <Fallback name="AttackOrDefend">
+              <Sequence name="AttackStrategy">
+                <CheckBallPossession desired_possession="1" current_possession="{ball_possession}"/>
+              </Sequence>
+              <Sequence name="DefenseStrategy">
+                <AlwaysSuccess />
+              </Sequence>
+          </Fallback>
+
+          <Parallel name="ExecuteRoles" success_count="3">
+            
+            <Sequence name="GoalkeeperBehavior">
+              <GoToPoint robot_id="{goalkeeper_id}" x="-5500" y="0" w="0" />
+            </Sequence>
+
+            <GoToPoint robot_id="1" x="0" y="1000" w="0" />
+            
+            <GoToPoint robot_id="2" x="0" y="-1000" w="0" />
+
+          </Parallel>
+        </Sequence>
+
+      </Fallback>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+</root>
