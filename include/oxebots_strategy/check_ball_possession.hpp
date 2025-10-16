@@ -1,21 +1,31 @@
 #pragma once
+
 #include "behaviortree_cpp/condition_node.h"
+#include "rclcpp/rclcpp.hpp"
+#include "oxebots_interfaces/msg/game_data.hpp"
+#include <mutex>
+#include <optional>
+
+namespace oxebots_strategy
+{
 
 class CheckBallPossession : public BT::ConditionNode
 {
 public:
-  CheckBallPossession(const std::string& name, const BT::NodeConfig& config)
-    : BT::ConditionNode(name, config) {}
+  CheckBallPossession(const std::string& name, const BT::NodeConfig& config, rclcpp::Node::SharedPtr node);
 
-  static BT::PortsList providedPorts() {
-    return { 
-      BT::InputPort<std::string>("desired_possession"),
-      BT::InputPort<int>("current_possession")
-    };
-  }
+  static BT::PortsList providedPorts();
+  BT::NodeStatus tick() override;
 
-  BT::NodeStatus tick() override {
-    // TODO: Implementar a lógica de verificação
-    return BT::NodeStatus::FAILURE;
-  }
+private:
+  void gameDataCallback(const oxebots_interfaces::msg::GameData::SharedPtr msg);
+  std::optional<oxebots_interfaces::msg::RobotGameData> getRobotData(unsigned int robot_id);
+
+  rclcpp::Node::SharedPtr node_;
+  rclcpp::Subscription<oxebots_interfaces::msg::GameData>::SharedPtr game_data_sub_;
+  
+  std::mutex data_mutex_;
+  std::optional<oxebots_interfaces::msg::GameData::SharedPtr> last_game_data_;
 };
+
+} // namespace oxebots_strategy

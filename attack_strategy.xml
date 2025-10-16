@@ -1,0 +1,19 @@
+<root main_tree_to_execute="MainTree" BTCPP_format="4">
+  <BehaviorTree ID="MainTree">
+    <Repeat>
+      <Sequence name="MainAttackerLoop">
+        <GetGameState ball_x="{ball_x}" ball_y="{ball_y}"/>
+        <Selector name="AttackDecision">
+          <Sequence name="DribbleToGoal">
+            <CheckBallPossession robot_id="0" threshold="150.0"/>
+            <GoToPoint name="PushToGoal" robot_id="0" x="1650" y="0" w="0.0" />
+          </Sequence>
+          <Sequence name="GoBehindBall">
+            <CalculatePointBehindBall ball_x="{ball_x}" ball_y="{ball_y}" target_x="1750" target_y="0" distance="200.0" behind_x="{behind_x}" behind_y="{behind_y}"/>
+            <GoToPoint name="GetBall" robot_id="0" x="{behind_x}" y="{behind_y}" w="0.0" />
+          </Sequence>
+        </Selector>
+      </Sequence>
+    </Repeat>
+  </BehaviorTree>
+</root>

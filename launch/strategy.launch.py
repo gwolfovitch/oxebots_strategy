@@ -12,7 +12,7 @@ def generate_launch_description():
     strategy_pkg_share = get_package_share_directory("oxebots_strategy")
 
     # Define o caminho completo para o arquivo XML da árvore de comportamento
-    behavior_tree_path = os.path.join(strategy_pkg_share, "strategy_tree.xml")
+    behavior_tree_path = os.path.join(strategy_pkg_share, "attack_strategy.xml")
 
     return LaunchDescription(
         [

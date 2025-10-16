@@ -36,6 +36,7 @@ add_executable(
   src/check_command.cpp
   src/assing_roles.cpp
   src/check_ball_possession.cpp
+  src/calculate_point_behind_ball.cpp
 )
 
 ament_target_dependencies(
@@ -90,7 +91,7 @@ install(
 )
 
 install(
-  FILES strategy_tree.xml
+  FILES strategy_tree.xml attack_strategy.xml
   DESTINATION share/${PROJECT_NAME}
 )
 

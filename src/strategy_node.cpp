@@ -6,6 +6,7 @@
 #include "oxebots_strategy/check_command.hpp"
 #include "oxebots_strategy/assign_roles.hpp"
 #include "oxebots_strategy/check_ball_possession.hpp"
+#include "oxebots_strategy/calculate_point_behind_ball.hpp"
 
 
 int main(int argc, char * argv[])
@@ -17,8 +18,7 @@ int main(int argc, char * argv[])
   std::string package_share_directory = ament_index_cpp::get_package_share_directory("oxebots_strategy");
 
   // 2. Define o caminho padrão para o arquivo XML.
-  // CORRIGIDO: Adicionado " e ; no final.
-  std::string default_tree_path = package_share_directory + "/strategy_tree.xml";
+  std::string default_tree_path = package_share_directory + "/attack_strategy.xml";
 
   // 3. Declara o parâmetro, permitindo que ele seja sobrescrito pelo launch file.
   node->declare_parameter<std::string>("bt_xml_path", default_tree_path);
@@ -27,13 +27,15 @@ int main(int argc, char * argv[])
   RCLCPP_INFO(node->get_logger(), "Carregando árvore de comportamento de: %s", tree_path.c_str());
 
   BT::BehaviorTreeFactory factory;
+  //factory.registerBuiltins();
   factory.registerNodeType<oxebots_strategy::GoToPointNode>("GoToPoint", node);
   factory.registerNodeType<GetGameState>("GetGameState", node);
 
   // Registra os nós que não precisam do handle do ROS
   factory.registerNodeType<CheckCommand>("CheckCommand");
   factory.registerNodeType<AssignRoles>("AssignRoles");
-  factory.registerNodeType<CheckBallPossession>("CheckBallPossession");
+  factory.registerNodeType<oxebots_strategy::CalculatePointBehindBall>("CalculatePointBehindBall");
+  factory.registerNodeType<oxebots_strategy::CheckBallPossession>("CheckBallPossession", node);
 
   // 4. Cria a árvore a partir do caminho obtido pelo parâmetro.
   try
@@ -59,4 +61,3 @@ int main(int argc, char * argv[])
   rclcpp::shutdown();
   return 0;
 }
-
