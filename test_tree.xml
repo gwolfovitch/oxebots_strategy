@@ -1,11 +1,10 @@
-<root main_tree_to_execute = "MainTree" BTCPP_format="4">
+<root main_tree_to_execute="MainTree" BTCPP_format="4">
   <BehaviorTree ID="MainTree">
-    <Sequence name="Exemplo">
-      
-      <GoToPoint robot_id="0" x="1200.0" y="500.0" />
-      
-      
-      
+    <Sequence name="Tentativa">
+      <GoToPoint robot_id="1" x="-2000" y="0" />
+      <GoToPoint robot_id="2" x="-1200" y="0" />
+      <BallToBlackboard ball_x="{ball_x}" ball_y="{ball_y}" />
+      <GoToPoint robot_id="0" x="{ball_x}" y="{ball_y}" />
     </Sequence>
   </BehaviorTree>
 </root>

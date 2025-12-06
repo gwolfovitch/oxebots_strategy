@@ -29,6 +29,7 @@ add_executable(
   strategy_node
   src/strategy_node.cpp
   src/go_to_point_node.cpp
+  src/ball_to_blackboard_node.cpp
 )
 
 ament_target_dependencies(

@@ -2,6 +2,7 @@
 #include "behaviortree_cpp/bt_factory.h"
 #include "behaviortree_cpp/blackboard.h"
 #include "oxebots_strategy/go_to_point_node.h"
+#include "oxebots_strategy/ball_to_blackboard_node.h"
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
 int main(int argc, char * argv[])
@@ -19,6 +20,7 @@ int main(int argc, char * argv[])
 
   BT::BehaviorTreeFactory factory;
   factory.registerNodeType<oxebots_strategy::GoToPointNode>("GoToPoint", node);
+  factory.registerNodeType<oxebots_strategy::BallToBlackboardNode>("BallToBlackboard", node);
 
   auto blackboard = BT::Blackboard::create();
   node->declare_parameter<bool>("is_yellow", false);
